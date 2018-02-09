@@ -8,8 +8,7 @@ File Manager completely written in **python**
 - Python **3.6**
 - PyQt **5.8**
 
-Download and Install PyQt5 from source: [Riverbank](https://www.riverbankcomputing.com/software/pyqt/download5).
-Install PyCrypto with pip or from [pypi *tar.gz](https://pypi.python.org/pypi/pycrypto).
+Download and Install PyQt5 from source: [Riverbank](https://www.riverbankcomputing.com/software/pyqt/download5)
 
 ## What's already working:
 

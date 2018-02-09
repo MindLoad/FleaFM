@@ -310,7 +310,10 @@ class MyTableWidget(QTableWidget):
                 else:
                     error("< Permission denied >")
             else:
-                subprocess.Popen([main.editor, _file]) if os.access(_file, os.W_OK) else error('< Permission denied >')
+                try:
+                    subprocess.Popen([main.editor, _file]) if os.access(_file, os.W_OK) else error('< Permission denied >')
+                except FileNotFoundError:
+                    return error("< Default editor error! >")
         else:
             """ Show folder size """
 
@@ -559,6 +562,7 @@ if __name__ == '__main__':
     __author__ = 'Mind Load'
     _suffix = ('K', 'M', 'G', 'T')
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon(":/icon"))
     main = Root()
     main.setWindowTitle("Flea")
     main.show()
