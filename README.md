@@ -17,10 +17,10 @@ Download and Install PyQt5 from source: [Riverbank](https://www.riverbankcomputi
 - Create links to objects
 - Read files by different encoding tables
 - Edit mode (with user editor)
+- Search & select files & folders by mask
 
 ## What's in the plans:
 
 - Copy mode
 - Delete mode
-- Search mode
 - Owner and Group editor
