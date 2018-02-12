@@ -11,8 +11,7 @@ import logging
 
 
 from ui import RootUI, TableWidget, PopupMenu, RenameUI, LinkUI, ReadUI, CreateUI, SelectByMaskUI
-from flea_context_managers import DBConnection
-from flea_logger import _log
+from flea_context import DBConnection, logs
 from collections import namedtuple
 from contextlib import suppress
 from pathlib import Path
@@ -70,7 +69,7 @@ class Root(QFrame):
             self.showread.setFixedSize(self.size())
 
 
-@_log
+@logs
 def error(message):
     _error = Error(message)
     _error.show()
