@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created: 05.01.18
-# Changed: 09.02.18
+# Changed: 12.02.18
 
 import source
 
@@ -450,3 +450,30 @@ class CreateUI:
         effect.setOffset(0)
         _widg.setGraphicsEffect(effect)
         _widg.InputValue.setFocus(True)
+
+
+class SelectByMaskUI:
+
+    def __init__(self, _widg):
+        """ Find Widget """
+        _widg.setWindowFlags(Qt.FramelessWindowHint)
+        _widg.setAttribute(Qt.WA_DeleteOnClose)
+        _widg.setFixedSize(310, 50)
+        _widg.setObjectName("Find")
+        _widg.setStyleSheet('''
+            QFrame#Find {background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f2f2f2, stop: 1.0 #e1e1e1);
+            border: 1px solid #bdbdbd;}
+            QLineEdit {padding-left: 3px;}
+            QLabel {border: none; background: transparent;}
+        ''')
+        _widg.logo = QLabel(_widg)
+        _widg.logo.setGeometry(9, 14, 20, 20)
+        _widg.logo.setPixmap(QPixmap(":/find"))
+        _widg.search_line = QLineEdit(_widg)
+        _widg.search_line.setGeometry(44, 10, 254, 30)
+        _widg.search_line.setText("*.*")
+        effect = QGraphicsDropShadowEffect()
+        effect.setBlurRadius(7)
+        effect.setOffset(0)
+        _widg.setGraphicsEffect(effect)
+        _widg.search_line.setFocus(True)

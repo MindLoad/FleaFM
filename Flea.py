@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created: 05.01.18
-# Changed: 09.02.18
+# Changed: 12.02.18
 
 import os
 import sys
@@ -9,12 +9,12 @@ import shutil
 import subprocess
 import logging
 
-from ui import RootUI, TableWidget, PopupMenu, RenameUI, LinkUI, ReadUI, CreateUI
+
+from ui import RootUI, TableWidget, PopupMenu, RenameUI, LinkUI, ReadUI, CreateUI, SelectByMaskUI
 from flea_context_managers import DBConnection
 from flea_logger import _log
 from collections import namedtuple
 from contextlib import suppress
-from functools import lru_cache
 from pathlib import Path
 from PyQt5.QtWidgets import QApplication, QFrame, QWidget, QTableWidget, QTableWidgetItem
 from PyQt5.QtGui import QIcon, QPixmap, QFont, QBrush, QColor, QPaintEvent, QPainter, QFocusEvent, QKeyEvent
@@ -372,6 +372,12 @@ class MyTableWidget(QTableWidget):
                 main.showMaximized()
             else:
                 main.showNormal()
+        elif a0.key() == Qt.Key_Plus:
+            self.selectfind = SelectByMask(self, 1)
+            self.selectfind.show()
+        elif a0.key() == Qt.Key_Minus:
+            self.selectfind = SelectByMask(self, 2)
+            self.selectfind.show()
         else:
             return QTableWidget.keyPressEvent(self, a0)
 
@@ -510,6 +516,46 @@ class Create(QFrame):
             self.panel.setFocus(True)
         else:
             return error("< Duplicate Names forbidden! >")
+
+    def keyPressEvent(self, a0: QKeyEvent):
+        if a0.key() == Qt.Key_Escape:
+            self.close()
+            self.panel.setFocus(True)
+        else:
+            return QWidget.keyPressEvent(self, a0)
+
+
+class SelectByMask(QFrame):
+
+    def __init__(self, panel, arg):
+        self.panel = panel
+        self.arg = arg
+        self.selectitem = None
+        super(SelectByMask, self).__init__(main)
+        self.ui = SelectByMaskUI(self)
+        self.search_line.returnPressed.connect(self.select)
+        if self.panel.objectName() == "__leftPanel":
+            self.move(self.panel.width() / 2 - 120, self.panel.height() / 2 - 25)
+        else:
+            self.move(self.panel.width() * 3 / 2 - 100, self.panel.height() / 2 - 25)
+
+    def select(self):
+        text = self.search_line.text().replace(".", "\.").replace("*", ".+")
+        exp = fr"^{text}$"
+        self.selectitem = self.panel.findItems(exp, Qt.MatchRegExp)
+        if self.selectitem:
+            self.run()
+
+    def run(self):
+        self.panel.setCurrentItem(self.selectitem[0])
+        for item in self.selectitem:
+            if item.text() in self.panel.read_panel.items_name:
+                if self.arg == 1:
+                    self.panel.to_insert(item)
+                else:
+                    self.panel.from_insert(item)
+        self.close()
+        self.panel.setFocus(True)
 
     def keyPressEvent(self, a0: QKeyEvent):
         if a0.key() == Qt.Key_Escape:
